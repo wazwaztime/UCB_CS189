@@ -245,7 +245,10 @@
     Positive semidefiniteness will be denoted as $A\succeq 0$. 
     
     \begin{solution}
-        TODO
+        $A$ is a symmetric matrix that can be orthogonally diagonalized : $A = Q\Lambda Q^{-1}$, $Q$ is an orthogonal matrix, $\Lambda = \text{diag}(\lambda_1,\lambda_2,...\lambda_n)$.
+        Let $y = xQ^{-1}$, $x^\top Ax = y^\top \Lambda y = \sum_{i=1}^{n}y_i^2 \lambda_i \geq 0$. $A=Q\Lambda Q^{-1}=UU^\top$. That is $\Lambda=DD^\top$. So for all column vectors in $D$, they are perpendicular to each other. $\lambda_i=D_{:,i}^2 \geq 0$. Therefore, the three are equivalent. \newline
+        What's more, The three are also equivalent to : $\forall i,\  A_{i, i} \geq 0$ and $\forall i, j,\  \lvert A_{i,j}\rvert \leq \sqrt{A_{i, i} * A_{j, j}}$.
+        \[ \qedhere \]
     \end{solution}
 
     \item 
