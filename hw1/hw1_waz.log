@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.6.28)  29 JUN 2025 14:57
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.6.28)  30 JUN 2025 23:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -334,7 +334,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 [15]
 
-[16] (./hw1_waz.aux)
+[16]
+
+[17]
+
+[18] (./hw1_waz.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -349,6 +353,6 @@ Here is how much of TeX's memory you used:
  33215 multiletter control sequences out of 15000+600000
  565632 words of font info for 73 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 72i,12n,79p,540b,624s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,15n,79p,540b,629s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on hw1_waz.pdf (16 pages).
+Output written on hw1_waz.pdf (18 pages).

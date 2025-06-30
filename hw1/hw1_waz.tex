@@ -247,7 +247,7 @@
     \begin{solution}
         $A$ is a symmetric matrix that can be orthogonally diagonalized : $A = Q\Lambda Q^{-1}$, $Q$ is an orthogonal matrix, $\Lambda = \text{diag}(\lambda_1,\lambda_2,...\lambda_n)$.
         Let $y = xQ^{-1}$, $x^\top Ax = y^\top \Lambda y = \sum_{i=1}^{n}y_i^2 \lambda_i \geq 0$. $A=Q\Lambda Q^{-1}=UU^\top$. That is $\Lambda=DD^\top$. So for all column vectors in $D$, they are perpendicular to each other. $\lambda_i=D_{:,i}^2 \geq 0$. Therefore, the three are equivalent. \newline
-        What's more, The three are also equivalent to : $\forall i,\  A_{i, i} \geq 0$ and $\forall i, j,\  \lvert A_{i,j}\rvert \leq \sqrt{A_{i, i} * A_{j, j}}$.
+        What's more, The three are also equivalent to : $\forall i,\  A_{i, i} \geq 0$ and $\forall i, j,\  | A_{i,j} | \leq \sqrt{A_{i, i} * A_{j, j}}$.
         \[ \qedhere \]
     \end{solution}
 
@@ -275,7 +275,36 @@
     \end{enumerate}
     
     \begin{solution}
-        TODO
+        \begin{enumerate}
+        \item 
+        $x^\top A y = \sum_{i=1}^n\sum_{j=1}^m x_i\cdot A_{i,j} \cdot y_j = 
+        \sum_{i=1}^n\sum_{j=1}^m A_{i,j} \cdot x_i\cdot y_j = \langle A, x y^\top \rangle$.
+        \item
+        Let $B = UU^\top$, 
+        \begin{align*}
+            \trac(AB) &= \sum_{i=1}^n\sum_{j=1}^n A_{i, j} \cdot B_{j, i} \\
+            &= \sum_{i=1}^n\sum_{j=1}^n A_{i, j} \sum_{k=1}^n U_{j, k} \cdot U^\top_{k, i} \\
+            &= \sum_{k=1}^n\sum_{j=1}^n (\sum_{i=1}^n U^\top_{k, i} \cdot A_{i, j}) \cdot U_{j, k} \\
+            &= \sum_{k=1}^n\sum_{j=1}^n (U^\top_{k, :}, A_{:, j}) \cdot U_{j, k} \\
+            &= \sum_{k=1}^n\sum_{j=1}^n (U^\top_{:, k}, A_{:, j}) \cdot U_{j, k} \\
+            &= \sum_{k=1}^n u^\top_k \cdot A \cdot u_k \geq 0.
+        \end{align*}
+        \item
+            Let $B = Q\Lambda Q^{-1}$, $\Lambda = \text{diag}(\lambda_1,\lambda_2,...\lambda_n)$. \\
+            $\langle B, B \rangle = \trac(B^\top B) = \trac(Q\Lambda^2 Q^{-1})=\sum_{i=1}^n \lambda_i^2$.
+            \begin{align*}
+            \sqrt n \lambda_{\max}(A) \|B\|_F&=\sqrt n \lambda_{\max}(A) \sqrt{\sum_{i=1}^n \lambda_i^2} \\
+            &= \sqrt{(\sum_{i=1}^n \lambda_{\max}^2(A))(\sum_{i=1}^n \lambda_i^2)} \geq \lambda_{\max}(A)\sum_{i=1}^n \lambda_i = \lambda_{\max}(A)\trac(B).
+            \end{align*}
+            Let $P = \lambda_{\max}(A)I-A$, for any $\alpha \in \lambda(A)$, $\lambda_{\max}(A)-\alpha$ is an eigenvalue of $P$. So $P$ is a PSD matrix. Thus, $\trac(P, B) \geq 0$.
+            \begin{align*}
+            \trac(P, B)&=\trac(\lambda_{\max}(A)I-A, B) \\
+            &=\trac(\lambda_{\max}(A)I, B) - \trac(A, B) \\
+            &= \lambda_{\max}(A)\trac(B)-\trac(A, B) \geq 0.
+            \end{align*}
+            Therefore, $\langle A, B \rangle = \trac(A, B) \leq \lambda_{\max}(A)\trac(B) \leq \sqrt n \lambda_{\max}(A) \|B\|_F$.
+        \end{enumerate}
+        \[ \qedhere \]
     \end{solution}
 
     \item 
@@ -286,7 +315,16 @@
     \]
     
     \begin{solution}
-        TODO
+        For a constant vector $v$, $|u^\top (A v)| \leq \|u\|_F\|A v\|_F=\|A v\|_F$. \\
+        When $u=\frac{Av}{\|Av\|_F}$,  $|u^\top (A v)| = \|u\|_F\|A v\|_F=\|A v\|_F = \sqrt{\trac((Av)^\top Av)}=\sqrt{\trac(v^\top A^\top A v)}$. \\
+        Let $B = A^\top A$, $B$ is a PSD matrix. \\
+        Let $B = Q^\top\Lambda Q$, $w=Qv$. $\trac(v^\top A^\top A v) = \trac(v^\top B v)=\trac(w^\top \Lambda w)$. \\
+        $\|w\|=w^\top w = v^\top Q^\top Q v = \|v\|=1$, $\trac(w^\top \Lambda w) = \sum_{i=1} \lambda_i w_i^2 \leq \lambda_{\max}\sum_{i=1} w_i^2 = \lambda_{\max}$. \\
+        Only if $u = \frac{Av}{\|Av\|_F}$, $v = Q^{-1}w$ and 
+        $w = \begin{cases} 1, & \text{if } i = \argmax(\lambda) \\ 0, &\text{otherwise} \end{cases}$, $\sigma_{\max}(A) = u^\top A v$. \\
+        Therefore, $\sigma_{\max}(A) = \max_{\substack{u \,\in\, \R^{m},\; v \,\in\, \R^n \\ \|u\|=1,\; \|v\|=1}}(u^\top A v)$. 
+        \[ \qedhere \]
+
     \end{solution}
 
 \end{enumerate}
@@ -305,7 +343,12 @@
     \emph{Hint}: The gradient has the same dimensions as $A$. Use the chain rule.
     
     \begin{solution}
-        TODO
+        $$
+        \begin{bmatrix}
+            (2 A_{11}+e^{A_{11}+A_{22}})\cos(A^2_{11}+e^{A_{11}+A_{22}}) + x_1 y_1 & x_1 y_2\\
+            x_2 y_1 & e^{A_{11}+A_{22}}\cos(A^2_{11}+e^{A_{11}+A_{22}}) + x_2 y_2
+        \end{bmatrix}
+        $$
     \end{solution}
 
     \item 
@@ -323,7 +366,33 @@
     \end{enumerate}
     
     \begin{solution}
-        TODO
+        \begin{enumerate}
+            \item 
+            \begin{align*}
+            \|A\|_{2}=\sup_{x \neq 0} \frac{\|Ax\|_2}{\|x\|_2} &=
+            \sup_{x \neq 0} \sqrt{\frac{\trac(x^\top A^\top A x)}{x^\top x}} \\
+            &= \sup_{x \neq 0} \sqrt{\frac{\trac(x^\top B x)}{x^\top x}} \\
+            &= \sup_{y \neq 0} \sqrt{\frac{\trac(y^\top \Lambda y)}{y^\top y}} \\
+            &= \sigma_{\max}(A).
+            \end{align*}
+            \item
+            For a vector $y \in \R^n$, 
+            \begin{align*}
+                \|y\|_\infty &= \lim_{k \to \infty} \sqrt[k]{\sum_{i=1}^n |y_i|^k} \\
+                &= \lim_{k \to \infty} |y|_{\max} \sqrt[k]{\sum_{i=1}^n |\frac{y_i}{|y|_{\max}}|^k} \\
+                &= |y|_{\max} \lim_{k \to \infty} \sqrt[k]{\sum_{i=1}^n q_i^k} \quad (\forall q_i \in [0, 1] \text{ and } \exists q_i=1) \\
+                &= |y|_{\max}
+            \end{align*}
+            \begin{align*}
+            \|A\|_{\infty} = \sup_{x \neq 0} \frac{\|Ax\|_\infty}{\|x\|_\infty} &=
+            \lim_{k \to \infty} \sqrt[k]{\frac{\sum_{i=1}^m|Ax|_i^k}{\sum_{i=1}^n |x_i|^k}} \\
+            &= \lim_{k \to \infty} \sqrt[k]{\frac{\sum_{i=1}^m|\sum_{j=1}^n A_{i,j}x_j|^k}{\sum_{j=1}^n |x_j|^k}} \\
+            &= \lim_{k \to \infty} \frac{\sqrt[k]{\sum_{i=1}^m|\sum_{j=1}^n A_{i,j}x_j|^k}}{|x|_{\max}} \\
+            &= \frac{\max_{i=1}^m|\sum_{j=1}^n A_{i,j}x_j|}{|x|_{\max}} \\
+            &= \frac{\max_{i=1}^m |x|_{\max}\sum_{j=1}^n |A_{i,j}|}{|x|_{\max}} \\
+            &= \max_{i=1}^m\sum_{j=1}^n |A_{i,j}|
+            \end{align*}
+        \end{enumerate}
     \end{solution}
 
     \item 
@@ -332,7 +401,7 @@
         Let $\alpha = \sum\limits_{i=1}^n y_i \ln{(1 + e^{\beta_i})}$ for $y,\, \beta \in \R^n$.
         What are the partial derivatives $\frac{\partial \alpha}{\partial \beta_i}$?
         \item 
-        Given $x \in \R^n$, $A \in \R^{mxn}$.
+        Given $x \in \R^n$, $A \in \R^{m \times n}$.
         Write the partial derivative $\frac{\partial (Ax)}{\partial x}$.
         \item
         Given $z \in \R^m$.
@@ -341,12 +410,40 @@
         Given $x \in \R^n$, $z \in \R^m$, and $z = g(x)$.
         Write the gradient $\nabla_x z^\top z$ in terms of $\frac{\partial z}{\partial x}$ and $z$.
         \item
-        Given $x \in \R^n$, $y,\, z \in \R^m$, $A \in \R^{mxn}$, and $z = Ax - y$.
+        Given $x \in \R^n$, $y,\, z \in \R^m$, $A \in \R^{m \times n}$, and $z = Ax - y$.
         Write the gradient $\nabla_x (z^\top z)$.
     \end{enumerate}
     
     \begin{solution}
-        TODO
+        \begin{enumerate}
+            \item 
+            $$
+            \frac{\partial \alpha}{\partial \beta_i} = \frac{\partial y_i \ln{(1 + e^{\beta_i})}}{\partial \beta_i}=y_i\frac{e^{\beta_i}}{1+e^{\beta_i}}
+            $$
+            \item
+            $$
+            \frac{\partial (Ax)}{\partial x} = A
+            $$
+            \item 
+            $$
+            z^\top z = \sum_{i=1}^m z_i^2
+            $$
+
+            $$
+            \nabla_z (z^\top z) = 2z
+            $$
+            \item
+            $$
+            \nabla_x (z^\top z) = ((\nabla_z (z^\top z))^\top\frac{\partial z}{\partial x})^\top=
+            2(\frac{\partial z}{\partial x})^\top z
+            $$
+            \item
+            $$
+            \nabla_x (z^\top z) = ((\nabla_z (z^\top z))^\top\frac{\partial z}{\partial x})^\top=
+            2(\frac{\partial z}{\partial x})^\top z = 2A^\top (Ax-y)
+            $$
+            \[ \qedhere \]
+        \end{enumerate}
     \end{solution}
 
 \end{enumerate}
