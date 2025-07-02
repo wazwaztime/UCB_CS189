@@ -519,7 +519,20 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     \emph{Hint:} To break down $\mathrm{RSS}(W)$ into its component summations, start with the relationship between the Frobenius norm and the trace of a matrix.
 
     \begin{solution}
-        TODO
+        \begin{align*}
+        \mathrm{RSS}(W) &= \| X W^\top - Y \|^2_F \\
+        &= \trac((X W^\top - Y)^\top (X W^\top - Y)) \\
+        &= \sum_{i=1}^n\sum_{j=1}^k (X W^\top - Y)_{ij}^2 \\
+        &= \sum_{i=1}^n\sum_{j=1}^k ((\sum_{p=1}^d X_{ip} W_{jp}) - Y_{ij})^2.
+        \end{align*}
+        \begin{align*}
+        G_{jp} &= \sum_{i=1}^n X_{ip}*2*((\sum_{q=1}^d X_{iq} W_{jq}) - Y_{ij}) \\
+        &= 2*\sum_{i=1}^n((\sum_{q=1}^d W_{jq} X^\top_{qi}) - Y^\top_{ji}) X_{ip}.
+        \end{align*}
+        $$
+        G = \nabla_W \mathrm{RSS}(W) = 2 (WX^\top - Y^\top) X.
+        $$
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -532,7 +545,11 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     Show how to write $\mathrm{RSS}'_{\Delta W}(W)$ as a Frobenius inner product of two matrices, one related to part 3.1.
 
     \begin{solution}
-        TODO
+        \begin{align*}
+            \mathrm{RSS}'_{\Delta W}(W) &= \lim_{h \to 0} \frac{\mathrm{RSS}(W + h * \Delta W) - \mathrm{RSS}(W)}{h}\\
+            &= <\nabla_W \mathrm{RSS}(W), \Delta W>_F.
+        \end{align*}
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -547,7 +564,12 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     \textit{Hint}:  although $\mu$ is not a linear function of $\theta$, $\mu$ is linear in any {\em single} $W_j$; and any directional derivative of the form $\mu'_{\Delta \theta}(\theta)$ is linear in $\Delta \theta$ (for a fixed $\theta$).
 
     \begin{solution}
-        TODO
+        \begin{align*}
+            \mu'_{\Delta \theta}(\theta) &= \lim_{h \to 0} \frac{\mu(\theta + h*\Delta\theta) - \mu(\theta)}{h}\\
+            &= \sum_{j=1}^L W_{>j} \Delta W_j W_{<j} + \lim_{h \to 0} O(h^2)\\
+            &= \sum_{j=1}^L W_{>j} \Delta W_j W_{<j}.
+        \end{align*}
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -560,7 +582,11 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     (Just write the pure form of the chain rule without substituting the values of those directional derivatives; we'll substitute the values in the next part.)
 
     \begin{solution}
-        TODO
+        \begin{align*}
+        J'_{\Delta \theta}(\theta)|_{\theta = \theta_0} &= RSS'_{\Delta W}(W)|_{\theta = \theta_0, W = \mu(\theta), \Delta W = \mu'_{\Delta \theta}(\theta)} \\
+        &= RSS'_{\mu'_{\Delta \theta}(\theta)}(\mu(\theta)).
+        \end{align*}
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -577,7 +603,28 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     {\em Hint}:  you might find the cyclic property of the trace handy.
 
     \begin{solution}
-        TODO
+        $$
+        J'_{\Delta \theta}(\theta) = <\nabla_\theta J(\theta), \Delta \theta>_F.
+        $$
+        \begin{align*}
+        J'_{\Delta \theta}(\theta) &= RSS'_{\mu'_{\Delta \theta}(\theta)}(\mu(\theta)) \\
+        &= <\nabla_{\mu(\theta)} RSS(\mu(\theta)), \Delta \mu(\theta)>_F \\
+        &= <2(\mu(\theta)X^\top - Y^\top)X, \Delta \mu(\theta)>_F \\
+        &= <2(\mu(\theta)X^\top - Y^\top)X, \sum_{j=1}^L W_{>j} \Delta W_j W_{<j}>_F \\
+        &= \trac(2(\mu(\theta)X^\top - Y^\top)X\sum_{j=1}^L W^T_{<j} \Delta W^T_j W^T_{>j}) \\
+        &= \trac(2\sum_{j=1}^L(\mu(\theta)X^\top - Y^\top)X W^T_{<j} \Delta W^T_j W^T_{>j}) \\
+        &= \trac(2\sum_{j=1}^L W^T_{>j}(\mu(\theta)X^\top - Y^\top)X W^T_{<j} \Delta W^T_j) \\
+        &= <2\sum_{j=1}^L W^T_{>j}(\mu(\theta)X^\top - Y^\top)X W^T_{<j}, \Delta \theta>_F.
+        \end{align*}
+        \begin{eqnarray*}
+        \nabla_\theta J(\theta) & = & 2\sum_{j=1}^L W^T_{>j}(\mu(\theta)X^\top - Y^\top)X W^T_{<j} \\
+                            & = & (2 \, (\mu(\theta)\, X^\top - Y^\top) X W_{<L}^\top, \\ 
+                            &   & \ldots, \\
+                            &   & 2 W_{>j}^\top \, (\mu(\theta)\, X^\top - Y^\top) X W_{<j}^\top, \\
+                            &   & \ldots, \\
+                            &   & 2 W_{>1}^\top \, (\mu(\theta)\, X^\top - Y^\top) X).
+    \end{eqnarray*}
+        \[ \qedhere \]
     \end{solution}
 
 \end{enumerate}
@@ -595,7 +642,14 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     \emph{Hint}: Use linearity of expectation.
 
     \begin{solution}
-        TODO
+        For any vector $x \in \R^n$,
+        \begin{align*}
+        x^T\Sigma x &= x^T\mathbb{E}[(Z-\mu)(Z-\mu)^\top] x \\
+        &= \mathbb{E}[x^T(Z-\mu)(Z-\mu)^\top x].
+        \end{align*} 
+        Let $y=(Z-\mu)^\top x$, $x^T\Sigma x = \mathbb{E}[y^\top y] = \mathbb{E}[\|y\|_2] \geq 0$.
+        So $\Sigma$ is always positive semidefinite.
+        
     \end{solution}
 
     \item
