@@ -647,8 +647,9 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
         x^T\Sigma x &= x^T\mathbb{E}[(Z-\mu)(Z-\mu)^\top] x \\
         &= \mathbb{E}[x^T(Z-\mu)(Z-\mu)^\top x].
         \end{align*} 
-        Let $y=(Z-\mu)^\top x$, $x^T\Sigma x = \mathbb{E}[y^\top y] = \mathbb{E}[\|y\|_2] \geq 0$.
+        Let $y=(Z-\mu)^\top x$, $x^T\Sigma x = \mathbb{E}[y^\top y] = \mathbb{E}[\|y\|^2_2] \geq 0$.
         So $\Sigma$ is always positive semidefinite.
+        \[\qedhere\]
         
     \end{solution}
 
@@ -658,7 +659,30 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     Determine the minimum value that $x$ must have, expressed as a function of $y$, such that a patient who tests positive actually has the disease with probability greater than 0.5.
 
     \begin{solution}
-        TODO
+        Let $X$ be the event that a patient has the disease, and $Y$ be the event that the test is positive.
+
+        We are given:
+        $\mathbb{P}(X) = 1/1000$, 
+        $\mathbb{P}(Y|X) = x$ (true positive rate) and 
+        $\mathbb{P}(Y|X^c) = y$ (false positive rate).
+
+        We want $\mathbb{P}(X|Y) > 0.5$.
+
+        By Bayes' theorem:
+        \[
+        \mathbb{P}(X|Y) = \frac{\mathbb{P}(Y|X)\mathbb{P}(X)}{\mathbb{P}(Y|X)\mathbb{P}(X) + \mathbb{P}(Y|X^c)\mathbb{P}(X^c)}
+        = \frac{x \cdot \frac{1}{1000}}{x \cdot \frac{1}{1000} + y \cdot \frac{999}{1000}}
+        \]
+
+        Set this greater than $0.5$:
+        \[
+        \frac{x}{x + 999y} > 0.5
+        \implies x > 0.5(x + 999y)
+        \implies x > 999y.
+        \]
+
+        Therefore, the minimum value $x$ must have is: $x > 999y$.
+        \[ \qedhere\]
     \end{solution}
 
     \item
@@ -673,7 +697,22 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     What is the expected value of the score of a single strike?
 
     \begin{solution}
-        TODO
+        $$
+        \E(\text{score}) = 4 * \int_{0}^{\frac{1}{\sqrt{3}}} f(x) \mathrm{dx}
+        + 3 * \int_{\frac{1}{\sqrt{3}}}^{1}  f(x) \mathrm{dx}
+        + 2 * \int_{1}^{\sqrt{3}}  f(x) \mathrm{dx}.
+        $$
+        $$
+        \int f(x) \mathrm{dx} = \int \frac{2}{\pi (1+x^2)} \mathrm{dx} \quad (x > 0).
+        $$
+        Let $x = \tan \theta$, $\mathrm{dx} = (1+\tan^2(\theta)) \mathrm{d\theta}$.
+        $$
+        \int \frac{2}{\pi (1+x^2)} \mathrm{dx} = \int \frac{2}{\pi (1+\tan^2(\theta))} (1+\tan^2(\theta)) \mathrm{d\theta} = \frac{2}{\pi} \theta + \mathrm{C} = \frac{2}{\pi} \arctan(x) + \mathrm{C}.
+        $$
+        $$
+        \E(\text{score}) = 4 * \frac{1}{3} + 3 * \frac{1}{6} + 2 * \frac{1}{6} = \frac{13}{6}.
+        $$
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -682,7 +721,23 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     What well-known probability distribution is this? What are its parameters?
 
     \begin{solution}
-        TODO
+        \begin{align*}
+        {\mathbb{P}(X = k \,|\, X+Y=n)} &= 
+        \frac{e^{-\lambda}\frac{\lambda^k}{k!}e^{-\mu}\frac{\mu^{n-k}}{(n-k)!}}
+             {\sum_{i=0}^n e^{-\lambda}\frac{\lambda^i}{i!}e^{-\mu}\frac{\mu^{n-i}}{(n-i)!}} \\
+        &= 
+        \frac{\frac{\lambda^k}{k!}\frac{\mu^{n-k}}{(n-k)!}(n!)}
+             {\sum_{i=0}^n \frac{\lambda^i}{i!}\frac{\mu^{n-i}}{(n-i)!}(n!)} \\
+        &=
+        \frac{\binom{n}{k}\lambda^k\mu^{n-k}}
+             {\sum_{i=0}^n \binom{n}{i}\lambda^i\mu^{n-i}} \\
+        &= 
+        \frac{\binom{n}{k}(\frac{\lambda}{\lambda+\mu})^k(\frac{\mu}{\lambda+\mu})^{n-k}}
+             {\sum_{i=0}^n \binom{n}{i}(\frac{\lambda}{\lambda+\mu})^i(\frac{\mu}{\lambda+\mu})^{n-i}} \\
+        &= \binom{n}{k}(\frac{\lambda}{\lambda+\mu})^k(\frac{\mu}{\lambda+\mu})^{n-k}.
+        \end{align*}
+        It is binomial distribution $B(n, \frac{\lambda}{\lambda+\mu})$.
+        \[ \qedhere\]
     \end{solution}
 
     \item
@@ -690,7 +745,14 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     If the coin is flipped $n$ times and heads is observed $k$ times, what is the maximum likelihood estimate (MLE) of $\theta$?
 
     \begin{solution}
-        TODO
+        $$
+        L(\theta) = \mathbb{P}(N = n, K = k \mid \theta) = \binom{n}{k} \theta^k (1-\theta)^{n-k}.
+        $$
+        $$
+        L'(\theta) = \binom{n}{k} \theta^{k-1}(1-\theta)^{n-k-1}(k - n\theta).
+        $$
+        When $\theta_0 = \frac{k}{n}$, $L'(\theta_0) = 0$, $L(\theta_0) = L(\theta)_{\max}$ .
+        \[ \qedhere \]
     \end{solution}
 
     \item 
@@ -707,7 +769,21 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
     \end{enumerate}
 
     \begin{solution}
-        TODO
+        \begin{enumerate}
+            \item 
+            $$
+            \int_{1}^{+\infty} f_{\theta}(x) \mathrm{dx} = \int_{\theta}^{+\infty} e^{\theta - x} \mathrm{dx} = \left. (-e^{\theta - x}) \right| _{\theta}^{+\infty}=1.
+            $$
+            \item
+            $$
+            L(\theta) =  \prod_{i=1}^n f_{\theta}(x_i) = \begin{cases} 
+                \prod_{i=1}^n e^{\theta - x_i} \quad &\text{when } \min\{x_i\} \geq \theta \\
+                0 \quad &\text{when } \min\{x_i\} < \theta
+            \end{cases}
+            $$
+            $L(\theta)$ is increasing on $(-\infty, min\{x_i\}]$. So, when $\theta_0 = min\{x_i\}$, $L_{\max}(\theta) = L(\theta_0)$.
+            \[ \qedhere \]
+        \end{enumerate}
     \end{solution}
 
 \end{enumerate}
@@ -743,7 +819,14 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     You must utilize the definition of expectation.
 
     \begin{solution}
-        TODO
+        \begin{align*}
+        \E[X] = \int_{\R^d} f(x)x\,\mathrm dx &= \frac{1}{2} (\int_{\R^d} f(x)x\,\mathrm dx + \int_{\R^d} f(x)x\,\mathrm dx) \\ 
+        &= \frac{1}{2} (\int_{\R^d} f(x)x\,\mathrm dx + \int_{\R^d} f(2\mu - x)x\,\mathrm dx) \\ 
+        &= \frac{1}{2} (\int_{\R^d} f(x)x\,\mathrm dx + \int_{\R^d} f(x)(2\mu - x)\,\mathrm dx) \\
+        &= \frac{1}{2} (2 \mu \int_{\R^d} f(x)\,\mathrm dx) \\
+        &= \mu.
+        \end{align*}
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -758,7 +841,42 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     You \textbf{cannot} assume anything about $\mathrm{Var}(Z)$ -- you must compute it via integration.
 
     \begin{solution}
-        TODO
+        Let $A = \Sigma^{-1/2}, b = -A\mu$, $z = Ax + b$, so $x = \Sigma^{1/2}z + \mu$.
+        \begin{align*}
+        \mathrm{Var}(X)=\E[XX^\top] - \mu \, \mu^\top &= \E[(\Sigma^{1/2}Z + \mu)(\Sigma^{1/2}Z + \mu)^\top] - \mu \, \mu^\top\\
+        &= \E[\Sigma^{1/2}ZZ^\top(\Sigma^{1/2})^\top + \mu Z^\top (\Sigma^{1/2})^\top+\Sigma^{1/2}Z\mu^\top]\\
+        &= \E[\Sigma^{1/2}ZZ^\top(\Sigma^{1/2})^\top] + 2\mu \E(Z^\top)\Sigma^{1/2}\\
+        &= \Sigma^{1/2}\E[ZZ^\top](\Sigma^{1/2})^\top\\
+        \E[ZZ^\top]_{ij} &= \int_{\R^d} f(A^{-1}z - A^{-1}b)\, |A^{-1}| z_i z_j \,\mathrm dz \\
+        &=\int_{\R^d} \frac{1}{\sqrt{(2\pi)^d|\Sigma|}} \exp\left(-\frac{1}{2} (A^{-1}z)^\top \Sigma^{-1} (A^{-1}z)\right) |A^{-1}| z_i z_j \,\mathrm dz \\
+        &=\int_{\R^d} \frac{1}{\sqrt{(2\pi)^d}} \exp\left(-\frac{1}{2} z^\top z\right) z_i z_j \,\mathrm dz \\
+        &=\int_{\R^d} \frac{1}{\sqrt{(2\pi)^d}} \exp\left(-\frac{1}{2} \sum_{p=1}^d z^2_p\right) z_i z_j \,\mathrm dz \\
+        &=\prod_{k=1}^d \int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_k\right) z_i[i=k] z_j[j=k] \,\mathrm dz_k \\
+         (i = j) : \quad 
+         \E[ZZ^\top]_{ij}&= \int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right) z^2_i \,\mathrm dz_i \prod_{k \neq i} \int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_k\right) \,\mathrm dz_k \\
+        &= \int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right) z^2_i \,\mathrm dz_i
+        \end{align*}
+        Let $u = z_i$, $\mathrm dv = \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right) z_i \mathrm dz_i$. 
+        So $\mathrm du = \mathrm dz_i$, $v = -\frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right)$.
+        \begin{align*}
+        (i = j) : \quad 
+         \E[ZZ^\top]_{ij} &= \int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right) z^2_i \,\mathrm dz_i \\
+        &= \int u \,\mathrm dv \\
+        &= \left. uv\right|_{-\infty}^{+\infty} - \int v \,\mathrm du \\
+        &= \left.\left[-\frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right)z_i\right]\right|_{-\infty}^{+\infty} - \int v \,\mathrm du \\
+        &= 0 - \int v \,\mathrm du \\
+        &= - \int -\frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_i\right) \,\mathrm dz_i \\
+        &= 1
+        \end{align*}
+
+        \begin{align*}
+        (i \neq j) : \quad         
+        \E[ZZ^\top]_{ij}&= \E(z_i) \E(z_j) \prod_{k \neq i, k \neq j}\int_{-\infty}^{+\infty} \frac{1}{\sqrt{(2\pi)}} \exp\left(-\frac{1}{2} z^2_k\right) \,\mathrm dz_k \\
+        &= 0
+        \end{align*}
+        So $\E[ZZ^\top] = I$. Therefore, $\mathrm{Var}(X)=\Sigma^{1/2}\E[ZZ^\top](\Sigma^{1/2})^\top=\Sigma^{1/2}I(\Sigma^{1/2})^\top=\Sigma$.
+        \[ \qedhere \]
+        
     \end{solution}
 
     \item
@@ -774,21 +892,56 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     \end{itemize}
 
     \begin{solution}
-        TODO
+        Let $A = \Sigma^{-1/2}, b = -A\mu$, $z = AX + b$, so $X = \Sigma^{1/2}z + \mu$.
+        \begin{align*}
+        M_X(\lambda) = \E[e^{\lambda^\top X}] &= 
+        \int_{\R^d} \exp\left(\lambda^\top X\right) \frac{1}{\sqrt{(2\pi)^d|\Sigma|}} \exp\left(-\frac{1}{2} (X - \mu)^\top \Sigma^{-1} (X - \mu)\right) \,\mathrm dx \\
+        &= \int_{\R^d} \exp\left(\lambda^\top (\Sigma^{1/2}z + \mu)\right) f(A^{-1}z - A^{-1}b)\, |A^{-1}| \,\mathrm dz \\
+        &= \int_{\R^d} \exp\left(\lambda^\top (\Sigma^{1/2}z + \mu)\right) \frac{1}{\sqrt{(2\pi)^d}} \exp\left(-\frac{1}{2} z^\top z\right) \,\mathrm dz \\
+        &= \frac{1}{\sqrt{(2\pi)^d}} \exp\left(\lambda^\top \mu\right)\int_{\R^d} \exp\left(\lambda^\top \Sigma^{1/2}z - \frac{1}{2} z^\top z\right) \,\mathrm dz .
+        \end{align*}
+        Let $v = \Sigma^{1/2}\lambda^\top$. 
+        \begin{align*}
+        M_X(\lambda) = \E[e^{\lambda^\top X}] &= \frac{1}{\sqrt{(2\pi)^d}} \exp\left(\lambda^\top \mu\right)\int_{\R^d} \exp\left(v^\top z - \frac{1}{2} z^\top z\right) \,\mathrm dz \\
+        &= \exp\left(\lambda^\top \mu\right)
+        \prod_{i=1}^d \int_{-\infty}^{\infty} \frac{1}{\sqrt{(2\pi)}}\exp\left(v_i z_i - \frac{1}{2} z^2_i\right) \,\mathrm dz_i \\
+        &= \exp\left(\lambda^\top \mu\right)
+        \prod_{i=1}^d \int_{-\infty}^{\infty} \frac{1}{\sqrt{(2\pi)}}\exp\left(- \frac{1}{2} (z_i - v_i)^2 + \frac{1}{2}v^2_i\right) \,\mathrm dz_i \\
+        &= \exp\left(\lambda^\top \mu + \frac{1}{2}v^\top v\right)
+        \prod_{i=1}^d \int_{-\infty}^{\infty} \frac{1}{\sqrt{(2\pi)}}\exp\left(- \frac{1}{2} (z_i - v_i)^2\right) \,\mathrm dz_i \\
+        &= \exp\left(\lambda^\top \mu + \frac{1}{2}v^\top v\right) \\
+        &= \exp\left(\lambda^\top\mu + \frac12 \lambda^\top\Sigma\lambda\right).
+        \end{align*}
+        \[ \qedhere \]
+
     \end{solution}
 
     \item 
     Using the fact that MGFs determine distributions, given $A \in \R^{k \times d}$ and $b \in \R^k$ identify the distribution of $AX + b$ (don't worry about covariance matrices being invertible). 
 
     \begin{solution}
-        TODO
+        \begin{align*}
+            M_{AX+b}(\lambda) &= \E[{\lambda^\top (AX+b)}]\\
+            &= e^{\lambda^\top b} \E[{\lambda^\top AX}] \\
+            &= e^{\lambda^\top b} M_X(A^\top \lambda) \\
+            &= \exp\left(\lambda^\top b + \lambda^\top A \mu + \frac12 \lambda^\top A \Sigma A^\top \lambda\right) \\
+            &= \exp\left(\lambda^\top (A \mu + b) + \frac12 \lambda^\top A \Sigma A^\top \lambda\right)
+        \end{align*}
+        Therefore, $$\Sigma_{AX+b} = A\Sigma_{X}A^\top,\quad \mu_{AX+b} = A \mu_{X} + b$$.
+        \[ \qedhere \]
     \end{solution}
 
     \item
     Show that there exists an affine transformation of $X$ that is distributed as the standard multivariate Gaussian, $\mathcal{N}(0, I_d)$. (Assume $\Sigma$ is invertible.) 
 
     \begin{solution}
-        TODO
+        
+        Let $A = \Sigma^{-1/2}, b = -A\mu$, $Z = AX + b$, so $X = \Sigma^{1/2}Z + \mu$. 
+        
+        $\Sigma_Z = I$, $\mu_Z = \mathbf{0}$.
+
+        Therefore, $Z \sim \mathcal{N}(0, I_d)$.
+        \[ \qedhere \]
     \end{solution}
 
 \end{enumerate}
