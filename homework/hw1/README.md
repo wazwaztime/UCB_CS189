@@ -1,4 +1,4 @@
-## Homework1
+### Homework1
 
 This is all the information for CS189 24Fall homework1.
 
