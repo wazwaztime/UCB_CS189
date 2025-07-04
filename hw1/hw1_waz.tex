@@ -135,9 +135,9 @@
                 For any $w \in \Ima T$, $\exists v \in V$ such that $T(v) = w$. So $\phi([v])=w$.
             \end{itemize}
             Therefore, \(\phi\) is a vector space isomorphism, so \(\Ima T \cong V / \ker T\).
-            \[ \qedhere \]
             
         \end{enumerate}
+        \[ \qedhere \]
 
     \end{solution}
 
@@ -227,9 +227,9 @@
         $A\R^n$ is $\text{Col}(A)$. \newline
         For any vector $v \in \R^n$, $A^\top Av \in A^\top A\R^n$: $\forall w \in \text{Null}(A)$, ($A^\top Av) \cdot w = (v^\top A^\top A)w = v^\top A^\top (A w) = \mathbf{0}$. So $A^\top Av \perp w$. That means $A^\top A\R^n \subseteq \text{Row}(A)$.
         Because $\rank (A^\top A) = \rank A$, $A^\top A\R^n = \text{Row}(A)$.
-        \[ \qedhere \]
 
         \end{enumerate}  
+        \[ \qedhere \]
     \end{solution}
 
     \item 
@@ -442,8 +442,8 @@
             \nabla_x (z^\top z) = ((\nabla_z (z^\top z))^\top\frac{\partial z}{\partial x})^\top=
             2(\frac{\partial z}{\partial x})^\top z = 2A^\top (Ax-y)
             $$
-            \[ \qedhere \]
         \end{enumerate}
+        \[ \qedhere \]
     \end{solution}
 
 \end{enumerate}
@@ -782,8 +782,8 @@ We would like to use a gradient descent algorithm to find $\theta$, so we will d
             \end{cases}
             $$
             $L(\theta)$ is increasing on $(-\infty, min\{x_i\}]$. So, when $\theta_0 = min\{x_i\}$, $L_{\max}(\theta) = L(\theta_0)$.
-            \[ \qedhere \]
         \end{enumerate}
+        \[ \qedhere \]
     \end{solution}
 
 \end{enumerate}
@@ -969,7 +969,35 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     \end{enumerate}
 
     \begin{solution}
-        TODO
+        \begin{enumerate}
+            \item 
+            $x_{n+1} = \frac{1}{2}x_n$, so $|x_n| = {\frac{1}{2}}^n |x_0|$.
+
+            $\forall \epsilon > 0, \exists n_0 = \lceil 1 + \log_{2}(\frac{x_0}{\epsilon}) \rceil \in \mathbb{Z}^+$ such that $\forall n \geq n_0, |x_n - 0| \leq |x_{n_0}| = {\frac{1}{2}}^{n_0} |x_0| \leq \frac{1}{2} \epsilon < \epsilon$. 
+
+            So, $\lim_{n\to\infty} x_n = 0$.
+
+            \item
+            \[L = \lim_{n \to \infty} n\left(1 - \frac{|x_{n+1}|}{|x_n|}\right) > 1\]
+            Let $\epsilon = \frac{L-1}{2} > 0$, so $\exists n_0 \in \mathbb{Z}^+$, $\forall n \geq n_0$, 
+            $$\left|n\left(1 - \frac{|x_{n+1}|}{|x_n|}\right) - L \right| < \epsilon \implies n\left(1 - \frac{|x_{n+1}|}{|x_n|}\right) > L - \epsilon = q > 1$$
+            So 
+            $$\frac{|x_{n+1}|}{|x_n|} < 1 - \frac{q}{n} \leq \exp(-\frac{q}{n})$$
+            $$
+            \frac{|x_{n+1}|}{|x_{n_0}|} = \prod_{i=n_0}^n \frac{|x_{i+1}|}{|x_{i}|}<\exp(-q\sum_{i=n_0}^n \frac{1}{i})
+            $$
+            $$
+            \frac{|x_{n}|}{|x_{n_0}|} < \exp(-q(\ln n - \ln n_0)) = \left(\frac{n_0}{n}\right)^q
+            $$
+            $$
+            |x_n| < \left(\frac{n_0}{n}\right)^q |x_{n_0}| < \frac{n_0}{n} |x_{n_0}|
+            $$
+            $$
+            \forall \epsilon_2 > 0,\quad \exists n_1 = \lceil \frac{n_0}{\epsilon_2}\left|x_{n_0}\right| \rceil, \quad \forall n \geq n_1, |x_n| < \epsilon_2
+            $$
+            Therefore, $\lim_{n\to \infty}|x_n| = 0$.
+        \end{enumerate}
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -992,7 +1020,35 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     \end{enumerate}
 
     \begin{solution}
-        TODO
+        \begin{enumerate}
+            \item 
+            $$
+            f'(x) = \frac{1}{x + 1}
+            $$
+            $$ 
+            f''(x) = -\frac{1}{(x + 1)^2}
+            $$
+            $$
+            f'''(x) = \frac{2}{(x + 1)^3}
+            $$
+            $$
+            f(x) \approx x - \frac{x^2}{2} + \frac{x^3}{3}
+            $$
+        \item 
+            $$
+            \Gamma(1) = 0! = 1
+            $$
+            $$
+            \psi(1) = \frac{\Gamma'(1)}{\Gamma(1)} = -\gamma
+            $$
+            $$
+            \Gamma'(1) = -\gamma
+            $$
+            $$
+            \Gamma(1.1) = \Gamma(1) + \Gamma'(1) (1.1 - 1) = 1 - 0.1\gamma
+            $$
+        \end{enumerate}
+        \[ \qedhere \]
     \end{solution}
 
     \item 
@@ -1008,7 +1064,21 @@ All throughout this question, we take $X \sim \mathcal{N}(\mu, \Sigma)$.
     Use Mean Value Theorem on the second order term instead of the first order term, which is what is usually done.
 
     \begin{solution}
-        TODO
+        $$
+        f(x) = f(x^*) + \nabla f(x^*)^\top(x - x^*)+\frac{1}{2}(x - x^*)^\top H(x) (x - x^*)
+        $$
+        This function admits a unique global optimum $x^* \in \R^n$, so $\nabla f(x^*) = \mathbf{0}$.
+        $$
+        f(x) = f(x^*) + \frac{1}{2}(x - x^*)^\top H(x) (x - x^*)
+        $$
+        $$
+        \forall w \in \mathcal{X}, v \in \R^n, v^\top H(w) v \leq \lambda_{\max}(H(w))\|v\|^2_2 \leq D
+        $$
+        Therefore, $
+        f(x) - f(x^*) = \frac{1}{2}(x - x^*)^\top H(x) (x - x^*) \leq \frac{D}{2}.
+        $
+        \[ \qedhere \]
+
     \end{solution}
 
 \end{enumerate}
@@ -1218,7 +1288,7 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     \textbf{List all collaborators. If you worked alone, then you must explicitly state so.}
 
     \begin{solution}
-        TODO
+        Worked alone.
     \end{solution}
 
     \item
@@ -1234,7 +1304,7 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     We wish to remind you that the consequences of academic misconduct are \emph{particularly severe}!
 
     \begin{solution}
-        TODO
+        Wang Anzhe.
     \end{solution}
 
 \end{enumerate}
