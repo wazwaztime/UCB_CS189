@@ -7,6 +7,9 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
 \usepackage[hidelinks]{hyperref}
 
 %% Define any custom commands/operators/environments/etc here
@@ -1130,7 +1133,9 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     It may not make use of library calls for calculating means, standard deviations, or the correlation coefficient itself directly.
 
     \begin{solution}
-        TODO
+        
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
 
     \item
@@ -1152,7 +1157,12 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     (Note that this procedure for finding an optimum relies on the convexity of $\mathcal{J}_\text{SE}$. You do not need to show convexity here, but it is a useful exercise to convince yourself this is valid.)
 
     \begin{solution}
-        TODO
+        $$\nabla_w \mathcal{J}_\text{SE}(w) = (2(Xw-Y)^\top X)^\top = 2X^\top(Xw-Y)$$
+        $$\nabla_w \mathcal{J}_\text{SE}(w^*) = 2X^\top(Xw^*-Y) = \mathbf{0}$$
+        $$w^*=\frac{X^\top Y}{X^\top X}$$
+
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
 
     \item 
@@ -1165,8 +1175,21 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     Keep the scatter plot from part (a) in the background so that you can compare the raw data to your linear function. 
     Does the function provide a good fit of the data? Why or why not?
     
-    \begin{solution}
-        TODO
+    \begin{solution}  
+        
+        data\_1: $w^* : 3.54$, MSE$: 32.03$, $\rho : 0.9391$
+        
+        $\rho$ is very close to $1$, indicating a strong positive linear relationship between $X$ and $Y$. But the linear model does not provide a good fit to the data, as the residuals are large and the MSE is high. 
+
+        \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{problem_7c.png} 
+        \caption{7c} 
+        \label{fig:fig7c} 
+        \end{figure}
+
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
     
     \item
@@ -1192,7 +1215,23 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     \emph{Hint:} the general form of your solution for $w^*$ is still valid, but you will now need to use features $\Phi$ where you once used raw inputs $X$.
 
     \begin{solution}
-        TODO
+        $$\mathcal{J}_\text{MSE}(w) = \frac{1}{n} \| \Phi w - Y \|_2^2.$$
+
+        $$\nabla_w \mathcal{J}_\text{SE}(w) = (2(\Phi w-Y)^\top \Phi)^\top = 2\Phi^\top(\Phi w-Y)$$
+
+        $\Phi^\top \Phi$ is a PSD matrix.
+
+        $$w^* = (\Phi^\top \Phi)^{-1}\Phi^\top Y$$
+
+        \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{problem_7d.png} 
+        \caption{7d} 
+        \label{fig:fig7d} 
+        \end{figure}
+
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
     
     \item 
@@ -1207,14 +1246,32 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     Repeat part (c) with these features on \textbf{dataset 1}, once again providing short commentary on any changes.
     
     \begin{solution}
-        TODO
+
+        \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{problem_7e.png} 
+        \caption{7e} 
+        \label{fig:fig7e} 
+        \end{figure}
+
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
     
     \item
     Repeat parts (c) - (e) with \textbf{dataset 2}.
     
     \begin{solution}
-        TODO
+
+        \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{problem_7f.png} 
+        \caption{7f} 
+        \label{fig:fig7f} 
+        \end{figure}
+
+        code: hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
     
     \item
@@ -1275,7 +1332,48 @@ and assume that $y_i$ is a (potentially stochastic) function of $x_i$.
     Which model does the validation mean squared error suggest is best?
 
     \begin{solution}
-        TODO
+
+        Degree: 1:
+
+        Average training set MSE = 19.6999
+
+        Average evaluating set MSE = 20.5744
+
+
+
+        Degree: 2:
+
+        Average training set MSE = 4.2479
+
+        Average evaluating set MSE = 4.5649
+
+
+
+        Degree: 3:
+
+        Average training set MSE = 4.2024
+
+        Average evaluating set MSE = 4.7379
+
+
+
+        Degree: 4:
+
+        Average training set MSE = 4.1753
+
+        Average evaluating set MSE = 4.9702
+
+
+
+        Degree: 5:
+
+        Average training set MSE = 4.1589
+
+        Average evaluating set MSE = 5.1436
+
+
+        code : hw1\_waz.ipynb
+        \[ \qedhere \]
     \end{solution}
     
 \end{enumerate}
