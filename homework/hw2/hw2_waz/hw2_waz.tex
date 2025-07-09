@@ -60,7 +60,7 @@
 \def\coursenumber{CS 189/289A}
 \def\class{Introduction to Machine Learning}
 \def\semester{Fall 2024}
-\def\name{Your Name} % Replace with your name
+\def\name{Wang Anzhe} % Replace with your name
 \def\title{HW 2}
 
 \begin{document}
@@ -99,24 +99,40 @@ Note that the probability density function of a non-degenerate (i.e. the covaria
     \end{enumerate}
 
     \begin{solution}
-        TODO
+        \begin{enumerate}[(i.)]
+            \item $Z = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}X$, $\Sigma = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$.
+            \item $Z = \begin{bmatrix} 1 & 0 \\ 1 & 2 \end{bmatrix}X$, $\Sigma = \begin{bmatrix} 1 & 1 \\ 1 & 5 \end{bmatrix}$.
+            \item $Z = \begin{bmatrix} 1 & 0 \\ -1 & 0 \end{bmatrix}X$, $\Sigma = \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$.
+            \item $Z_1$, $Z_2$ are both marginally Gaussian. But $(Z_2 | Z_1 = z) = \begin{cases} z & \frac{1}{2} \\ -z & \frac{1}{2} \end{cases}$ is not a Gaussian distribution. $\Sigma = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$.
+            \[ \qedhere \]
+        \end{enumerate}
     \end{solution}
 
-    \newpage
+    %\newpage
     \item Show that two Gaussian random variables can be uncorrelated, but not independent (\textit{Hint: use one of the examples in part (a)}). On the other hand, show that two uncorrelated, jointly Gaussian RVs are independent. 
 
     \begin{solution}
-        TODO
+        
+        Uncorrelated but not independent : $Z_1 = X_1$ and $Z_2 = U X_1$.
+        
+        Uncorrelated and independent : $Z_1 = X_1$ and $Z_2 = X_2$.
+        \[ \qedhere \]
+
     \end{solution}
 
-    \newpage
+    %\newpage
     \item With the setup in (a), let $Z = V X$, where $V \in \mathbb{R}^{2 \times 2}$, and $Z, X \in \mathbb{R}^2$. What is the covariance matrix $\Sigma_Z$? If $X$ is not a multivariate Gaussian but has the identity matrix $I\in\mathbb R^{2\times 2}$ as its covariance matrix, is your computed $\Sigma_Z$ still the covariance of $Z$?
 
     \begin{solution}
-        TODO
+
+        (1) $\Sigma_Z = \E[(Z-\mu)(Z-\mu)^\top]=\E[ZZ^\top]-\E[\mu\mu^\top]=\E[V X X^\top V]=V\E[XX^\top]V^\top$.
+
+        (2) $\E[X X^\top] = \Sigma_X = I \implies \Sigma_Z = VV^\top$ is still the covariance of $Z$.
+        \[ \qedhere \]
+
     \end{solution}
 
-    \newpage
+    %\newpage
     \item Given a jointly Gaussian zero mean RV $Z = [Z_1\; Z_2]^\top\in \mathbb{R}^2$ with covariance matrix $\Sigma_Z = \begin{bmatrix} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{12} & \Sigma_{22}\end{bmatrix}$, derive the conditional distribution of $(Z_1 | Z_2 = z)$.
 
     Hint: The following identity may be useful 
@@ -126,7 +142,31 @@ Note that the probability density function of a non-degenerate (i.e. the covaria
     \]
 
     \begin{solution}
-        TODO
+        Let $\Sigma_Z = \begin{bmatrix} a & b \\ b & c\end{bmatrix}$.
+        \begin{align*}
+            \begin{bmatrix} a & b \\ b & c\end{bmatrix} &= 
+            \begin{bmatrix} 1 &  \frac{b}{c} \\ 0 & 1\end{bmatrix}
+            \begin{bmatrix} a - \frac{b^2}{c} & 0 \\ 0 & c \end{bmatrix}
+            \begin{bmatrix} 1 & 0 \\ \frac{b}{c} & 1\end{bmatrix} \\
+            &= \begin{bmatrix} 1 &  \frac{b}{c} \\ 0 & 1\end{bmatrix}
+            \begin{bmatrix} \sqrt{a - \frac{b^2}{c}} & 0 \\ 0 & \sqrt{c} \end{bmatrix}^2
+            \begin{bmatrix} 1 & 0 \\ \frac{b}{c} & 1\end{bmatrix}.
+        \end{align*}
+        Let $Z = V X$, $X = [X_1, X_2]^\top$, $\Sigma_Z = VV^\top$. So, 
+        $$
+            V = \begin{bmatrix} 1 &  \frac{b}{c} \\ 0 & 1\end{bmatrix}
+            \begin{bmatrix} \sqrt{a - \frac{b^2}{c}} & 0 \\ 0 & \sqrt{c} \end{bmatrix}
+            = \begin{bmatrix} \sqrt{a - \frac{b^2}{c}} & \sqrt{\frac{b^2}{c}} \\ 0 & \sqrt{c} \end{bmatrix}.
+        $$
+        $$
+        \begin{cases}
+            Z_1 &= \sqrt{a - \frac{b^2}{c}}X_1 + \frac{b}{c}\sqrt{c} X_2 \\
+            Z_2 &= \sqrt{c} X_2
+        \end{cases}
+        $$
+        $(Z_1 | Z_2 = z) = \sqrt{a - \frac{b^2}{c}}X_1 + \frac{b}{c}z$. So $(Z_1 | Z_2 = z) \sim N(\frac{\Sigma_{12}}{\Sigma_{22}}z, \Sigma_{11} - \frac{\Sigma_{12}^2}{\Sigma{22}})$.
+        \[ \qedhere \]
+
     \end{solution}
 \end{enumerate}
 
@@ -150,7 +190,18 @@ It can also be shown using these two facts that $P_W$ is linear. For more inform
     \item Prove that $\displaystyle \ P_{\text{range}(X)}(y) = \argmin_{w \in \mathrm{range}(X)} \|y - w\|_2^2$.
 
     \begin{solution}
-        TODO
+        
+        Let $y = u + v,\qquad u\in W,\quad v \in W^\perp$.
+
+        \begin{align*}
+            \argmin_{w \in \mathrm{range}(X)} \|y - w\|_2^2 &= \argmin_{w \in \mathrm{range}(X)} \|u + v - w\|_2^2 \\
+            &= \argmin_{w \in \mathrm{range}(X)} \|u - w + v\|_2^2 \\
+            &= \argmin_{w \in \mathrm{range}(X)} \|u - w\|_2^2 + \|v\|_2^2 + 2 (u - w)^\top v
+            &= \argmin_{w \in \mathrm{range}(X)} \|u - w\|_2^2.
+        \end{align*}
+        So $\displaystyle \ P_{\text{range}(X)}(y) = \argmin_{w \in \mathrm{range}(X)} \|y - w\|_2^2$.
+        \[ \qedhere \]
+        
     \end{solution}
 
     \newpage
@@ -167,7 +218,40 @@ It can also be shown using these two facts that $P_W$ is linear. For more inform
     {\bf Hint} Use the eigendecomposition of $P$ to prove the forward direction.
     
     \begin{solution} 
-        TODO
+        \begin{enumerate}[(i)]
+            \item Prove a matrix $P \in \R^{n \times n}$ satisfied : 
+            \begin{itemize}
+                \item $\rank(P) = d$
+                \item $P = P^{T}$
+                \item $P^{2} = P$
+            \end{itemize}
+
+            Then there exists a $U \in \R^{n \times d}$ such that $P = UU^\top$ and $U^{\top}U = I$.
+
+            $P = Q\Lambda Q^{-1}$, $\Lambda^2 = \Lambda$, so $\Lambda = \begin{bmatrix} I_d & \mathbf{0} \\ \mathbf{0} & \mathbf{0}_{n-d} \end{bmatrix}$.
+
+            Let $Q = [U | V]$, $U \in \R^{n \times d}$, $V \in \R^{n \times (n - d)}$, 
+            $P = \begin{bmatrix} U & V \end{bmatrix}
+            \begin{bmatrix} I_d & \mathbf{0} \\ \mathbf{0} & \mathbf{0}_{n-d} \end{bmatrix}
+            \begin{bmatrix} U^T \\ V^T \end{bmatrix} = UU^\top$.
+
+            $\begin{bmatrix} U^T \\ V^T \end{bmatrix} \begin{bmatrix} U & V \end{bmatrix} = I_n$, so $U^\top U = I$.
+            \[ \qedhere \]
+
+            \item Prove a matrix $P \in \R^{n \times n}$ and there exists a $U \in \R^{n \times d}$ such that $P = UU^\top$ and $U^{\top}U = I$, satisfied : 
+            \begin{itemize}
+                \item $\rank(P) = d$
+                \item $P = P^{T}$
+                \item $P^{2} = P$
+            \end{itemize}
+            \begin{enumerate}[(1)]
+                \item $P^\top = (UU^\top)^\top = P$.
+                \item $\rank(U) = d$, $\rank(P) = d$.
+                \item $P^2 = (UU^\top)(UU^\top) = UIU^\top = UU^\top = P$.
+            \end{enumerate}
+            \[ \qedhere \]
+
+        \end{enumerate}
     \end{solution}
 
     \newpage
