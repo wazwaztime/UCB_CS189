@@ -264,28 +264,67 @@ It can also be shown using these two facts that $P_W$ is linear. For more inform
     Show that 
     \begin{enumerate}[(i)]
     	\item $\{u_i : \sigma_i > 0\}$ is an orthonormal basis for the columnspace of $X$ 
-    	\item Similarly, $\{v_i : \sigma_i > 0\}$ is an orthonormal basis for the row space of of $X$  \\ \emph{Hint: consider $X^\top$.}
+    	\item Similarly, $\{v_i : \sigma_i > 0\}$ is an orthonormal basis for the row space of $X$  \\ \emph{Hint: consider $X^\top$.}
     \end{enumerate}
 
     \begin{solution}
-        TODO
+        
+        $X = U\Sigma V^\top$. Let $k = \rank(X)$.
+
+        For $y \in \R^d$, $Xy = U\Sigma V^\top y$, let $a = V^\top y$.
+        So $\text{Col}(X) = \{U\Sigma a \mid a \in \R^d\}$.
+
+        $U = \begin{bmatrix}A & B\end{bmatrix}$, $A \in \R^{n \times k}$, 
+        $B \in \R^{n \times (n - k)}$. $\Sigma a = \begin{bmatrix}
+            \sigma_1 a_1 \\
+            \sigma_2 a_2 \\
+            \cdots \\
+            \sigma_k a_k \\
+            0 \\
+            \cdots \\
+            0
+        \end{bmatrix}$.
+
+        So $\text{Col}(X) = Ab$, $b \in \R^k$. Therefore, $\{u_i : \sigma_i > 0\}$ is an orthonormal basis for the columnspace of $X$.
+
+    	Similarly, $\text{Row}(X) = \text{Col}(X^\top)$, so
+        $\{v_i : \sigma_i > 0\}$ is an orthonormal basis for the row space of $X$.
+
+        \[ \qedhere \]
+
     \end{solution}
 
-    \newpage
+    %\newpage
     \item Let $X \in \mathbb{R}^{n \times d}$ such that $\rank(X) = d$. Prove that $X(X^{T}X)^{-1}X^{T}$ is a rank-$d$ orthogonal projection matrix. 
     
     \emph{Hint}: Consider the SVD decomposition of $X$. 
     
     \begin{solution}
-        TODO
+        
+        $ X(X^{\top}X)^{-1}X^{\top} = U\Sigma V^\top((U\Sigma V^\top)^{\top}U\Sigma V^\top)^{-1}(U\Sigma V^\top)^{\top} = 
+        U\Sigma V^\top(V\Sigma^\top \Sigma V^\top)^{-1}V\Sigma^\top U^\top$.
+
+        $\Sigma^\top \Sigma$ is a $d \times d$ full rank diagonal matrix.
+
+        $A = X(X^{\top}X)^{-1}X^{\top} = U\Sigma (\Sigma^\top \Sigma)^{-1}\Sigma^\top U^\top
+        $
+
+        Let $\Sigma = \begin{bmatrix} \hat{\Sigma} \\ 0 \end{bmatrix}$, 
+        $U = \begin{bmatrix}
+            \hat{U_1} & \hat{U_2}
+        \end{bmatrix}$
+        $A = U\hat{\Sigma} (\hat{\Sigma})^{-2}\hat{\Sigma}^\top U^\top = \hat{U_1}\hat{U_1}^\top$.
+
+        \[ \qedhere \]
     \end{solution}
 
-    \newpage
+    %\newpage
     \item
     Prove that $X(X^{T}X)^{-1}X^{T}$ is a projection onto range($X$).
     
     \begin{solution}
-        TODO
+        $A = X(X^{T}X)^{-1}X^{T}$, according to (e) and (b), $A^2 = A$. so $A$ is a projection onto range($X$).
+        \[ \qedhere \]
     \end{solution}
 
     \newpage
@@ -297,7 +336,8 @@ It can also be shown using these two facts that $P_W$ is linear. For more inform
     using only facts proved in this problem.
     
     \begin{solution}
-        TODO
+        $Xw^{*} = \displaystyle \ P_{\text{range}(X)}(y) = X(X^{T}X)^{-1}X^{T}y$, so $w^{*} = (X^{T}X)^{-1}X^{T}y$.
+        \[ \qedhere \]
     \end{solution}
 
 \end{enumerate}
@@ -332,7 +372,58 @@ For this question, assume you observe $n$ (data point, label) pairs $(x_i, y_i)_
     \end{enumerate}
     
     \begin{solution}
-        TODO
+        \begin{enumerate}[(i)]
+            \item 
+            $|\Sigma| = \prod_{i = 1}^{d} \sigma_i^2$, 
+            \begin{align*}
+                \ell(\mu, \Sigma) = \log p(X \mid \mu, \Sigma) &= \sum_{i=1}^n \log \left(
+                \frac{1}{\sqrt{(2\pi)^d | \Sigma |}}
+                \exp\left(
+                    -\frac{1}{2} (x_i - \mu)^\top\Sigma^{-1}(x_i - \mu)
+                \right)
+                \right)  \\
+                &=-\frac{n}{2}\left(d \log (2\pi) - \sum_{j = 1}^{d} \log\left(\frac{1}{\sigma_{j}^{2}}\right)\right) - \frac{1}{2} \sum_{i = 1}^{n}(x_{i} - \mu)^{T}\Sigma^{-1}(x_{i} - \mu).
+            \end{align*}
+            \item
+            \begin{align*}
+                \mu^{*} &= \argmax_{\mu} \ell(\mu, \Sigma) \\
+                &= \argmin_{\mu}  \sum_{i = 1}^{n}(x_{i} - \mu)^{T}\Sigma^{-1}(x_{i} - \mu)
+            \end{align*}
+            Let $f_i(\mu) = (x_{i} - \mu)^{T}\Sigma^{-1}(x_{i} - \mu)$, $
+                \nabla_\mu f_i(\mu) = 2\Sigma^{-1}(\mu - x_{i})
+            $.
+            So 
+            \begin{align*}
+                \nabla_\mu \sum_{i=1}^n f_i(\mu) &= \sum_{i=1}^n 2\Sigma^{-1}(\mu - x_{i})\\
+                &= 2\Sigma^{-1}(n\mu - \sum_{i=1}^n x_{i})
+            \end{align*}.
+
+            Therefore, $\displaystyle \mu^* = \frac{1}{n}\sum_{i=1}^n x_{i}$.
+
+            \item
+            \begin{align*}
+                \Sigma^{*} &= \argmax_{\Sigma} \ell(\mu, \Sigma) \\
+                &= \argmin_{\mu}  \sum_{i = 1}^{n}(x_{i} - \mu)^{T}\Sigma^{-1}(x_{i} - \mu) - 
+                n\sum_{j=1}^d \log\left(\frac{1}{\sigma_{j}^{2}}\right) \\
+                &= \argmin_{\mu}  \sum_{i = 1}^{n}(x_{i} - \mu)^{T}V(x_{i} - \mu) - 
+                n\sum_{j=1}^d \log\left(v_{j}\right).
+            \end{align*}
+            \begin{align*}
+                \frac{\partial \left( 
+                    \sum_{i = 1}^{n}(x_{i} - \mu)^{T}V(x_{i} - \mu) - 
+                n\sum_{j=1}^d \log\left(v_{j}\right)
+                \right)}
+                {\partial v_k} = (x_{ik} - \mu_k)^2 - \frac{n}{v_k}
+            \end{align*}
+            $\displaystyle (\sigma^*_k)^2 = \frac{(x_{ik} - \mu_k)^2}{n}$.
+            
+            $\displaystyle \Sigma^* = \text{diag}\left(\frac{(x_{i1} - \mu_1)^2}{n}, \frac{(x_{i2} - \mu_2)^2}{n}, \dots \right)$.
+            \item
+            $\displaystyle \hat{\mu} = \frac{1}{n}\sum_{i=1}^n x_{i}, \hat{\Sigma}^* = \text{diag}\left(\frac{(x_{i1} - \hat{\mu}_1)^2}{n}, \frac{(x_{i2} - \hat{\mu}_2)^2}{n}, \dots \right)$.
+            
+            \[ \qedhere \]
+
+        \end{enumerate}
     \end{solution}
 
     \newpage
