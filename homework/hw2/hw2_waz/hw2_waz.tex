@@ -440,7 +440,22 @@ For this question, assume you observe $n$ (data point, label) pairs $(x_i, y_i)_
     Clearly state what the matrix $A$ equals.
     
     \begin{solution}
-        TODO
+        $$
+        L(w) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma}
+        \exp(-\frac{(y_i - w^\top x_i)^2}{2\sigma^2})
+        $$
+        \begin{align*}
+            w_{\text{MLE}}=\argmax_{w} L(w) &= \argmax_{w} \log L(w)
+            \\
+            &= \argmax_{w} \sum_{i=1}^n \frac{-(y_i - w^\top x_i)^2}{\sigma_i^2} \\
+            &= \argmin_{w} \sum_{i=1}^n \frac{(y_i - w^\top x_i)^2}{\sigma_i^2} \\
+            &= \argmin_{w} \sum_{i=1}^n \frac{(y - Xw)_i^2}{\sigma_i^2} \\
+            &= \argmin_{w} \sum_{i=1}^n \left(\frac{(Xw - y)_i}{\sigma_i}\right)^2
+        \end{align*}
+        $$
+        A = \text{diag}(\frac{1}{\sigma_1},\frac{1}{\sigma_2}, \dots, \frac{1}{\sigma_n})
+        $$
+        \[ \qedhere \]
     \end{solution}
 
     \newpage
@@ -463,7 +478,18 @@ For this question, assume you observe $n$ (data point, label) pairs $(x_i, y_i)_
     \end{align*}
 
     \begin{solution}
-        TODO
+        \begin{align*}
+            \theta_{\text{MLE}} &= \argmax_{\theta \in P} \prod_{i=1}^{n} \theta_{y_i} 
+            = \argmax_{\theta \in P} \sum_{i=1}^n \log \theta_{y_i} \\
+            &= \argmax_{\theta \in P} \sum_{\omega \in \Omega} \sum_{i=1}^n [\omega = y_i] \log \theta_\omega \\
+            &= \argmax_{\theta \in P} \sum_{\omega \in \Omega} \text{count}_{\omega} \log \theta_\omega \\
+            &= \argmax_{\theta \in P} \sum_{\omega \in \Omega} \frac{\text{count}_{\omega}}{n} \log \theta_\omega \\
+            &\sum_{\omega \in \Omega} \frac{\text{count}_{\omega}}{n} \log \frac{\frac{\text{count}_{\omega}}{n}}{\theta_\omega} \geq 0 \\
+            &\sum_{\omega \in \Omega} \frac{\text{count}_{\omega}}{n} \log \theta_\omega \leq 
+            \sum_{\omega \in \Omega} \frac{\text{count}_{\omega}}{n} \log \frac{\text{count}_{\omega}}{n} \\
+            \theta_{\text{MLE}} &= \left( \frac{\text{count}_1}{n}, \frac{\text{count}_2}{n}, \dots, \frac{\text{count}_K}{n} \right)
+        \end{align*}
+        \[ \qedhere \]
     \end{solution}
 
     \newpage
